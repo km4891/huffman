@@ -1,3 +1,4 @@
+import java.util.PriorityQueue;
 
 public class App {
 
@@ -10,9 +11,27 @@ public class App {
 
         return null;
     }
-
+        // to build huffman tree
     private static Node buildHuffmanTree (int[] freq) {
+        final PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
 
+        for (char i = 0; i < ALPHABET_SIZE; i++) {
+            if(freq[i] > 0) {
+                priorityQueue.add(new Node (i, freq[i], null, null)); //make a new leaf node what it's freq is in that node and it has no L/R children
+            }
+        }
+        // if message only has 1 char
+        if(priorityQueue.size() == 1) {
+            priorityQueue.add(new Node('\0', 1, null, null));
+        }
+
+        while(priorityQueue.size() > 1) {
+            final Node left = priorityQueue.poll();
+            final Node right = priorityQueue.poll();
+            final Node parent = new Node('\0', left.frequency + right.frequency, left, right);
+            priorityQueue.add(parent);
+        }
+        return priorityQueue.poll(); //returns root
     }
 
     private static int[] buildFrequencyTable (final String data){
@@ -50,8 +69,11 @@ public class App {
         }
         public int compareTo(final Node that) {
             
-            final int frequencyComparison = Integer.compare(this.frequency, that.frequency)
-            return 0;
+            final int frequencyComparison = Integer.compare(this.frequency, that.frequency);
+            if (frequencyComparison != 0){
+                return frequencyComparison;
+            }
+            return Integer.compare(this.frequency, that.frequency);
         }
     }
 
