@@ -1,4 +1,4 @@
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class App {
 
@@ -9,8 +9,39 @@ public class App {
         
         final int[] freq = buildFrequencyTable(data);
         final Node root = buildHuffmanTree(freq);
+        final Map<Character, String> lookupTable = buildLookupTable(root);
 
-        return null;
+        return new HuffmanEncodedResult(generateEncodedData(data, lookupTable), root);
+    }
+
+    // get binary string for that particular character
+    private static String generateEncodedData(final String data, final Map<Character, String> lookupTable) {
+
+        final StringBuilder builder = new StringBuilder();
+        for (final char character : data.toCharArray()) {
+            builder.append(lookupTable.get(character));
+        }
+        return builder.toString();
+    }
+    // map each character to binary encoding, the more a char appears in a msg the shorter it's binary encoding will be
+    private static Map<Character, String> buildLookupTable (final Node root){
+        
+        final Map<Character, String> lookupTable = new HashMap<>();
+
+        buildLookupTableImpl(root, "",lookupTable);
+        
+        return lookupTable;
+
+    }
+
+    private static void buildLookupTableImpl(final Node node, final String s,final Map<Character,String> lookupTable) {
+
+        if (!node.isLeaf()) {
+            buildLookupTableImpl(node.leftChild, s + '0', lookupTable);
+            buildLookupTableImpl(node.rightChild, s + '1', lookupTable);
+        } else {
+            lookupTable.put(node.character, s);
+        }
     }
         // to build huffman tree
     private static Node buildHuffmanTree (int[] freq) {
@@ -85,6 +116,7 @@ public class App {
         final String test = "abcdeffg";
         final int[] ft = buildFrequencyTable(test);
         final Node n = buildHuffmanTree(ft);
+        final Map<Character, String> lookup = buildLookupTable(n);
         System.out.println(n);
 	}
 
