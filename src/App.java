@@ -8,6 +8,7 @@ public class App {
     public HuffmanEncodedResult compress (final String data){
         
         final int[] freq = buildFrequencyTable(data);
+        final Node root = buildHuffmanTree(freq);
 
         return null;
     }
@@ -83,7 +84,8 @@ public class App {
 	public static void main(String[] args) {
         final String test = "abcdeffg";
         final int[] ft = buildFrequencyTable(test);
-        System.out.println(ft);
+        final Node n = buildHuffmanTree(ft);
+        System.out.println(n);
 	}
 
 }
