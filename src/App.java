@@ -29,7 +29,7 @@ public class App {
         return null;
     }
 
-    static class Node {
+    static class Node implements Comparable<Node> {
 
         private final char character;
         private final int frequency;
@@ -47,6 +47,11 @@ public class App {
             }
         boolean isLeaf() {
             return this.leftChild == null && this.rightChild == null;
+        }
+        public int compareTo(final Node that) {
+            
+            final int frequencyComparison = Integer.compare(this.frequency, that.frequency)
+            return 0;
         }
     }
 
