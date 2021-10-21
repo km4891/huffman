@@ -111,6 +111,13 @@ public class App {
 
     static class HuffmanEncodedResult {
 
+        final Node root;
+        final String encodedData;
+
+        HuffmanEncodedResult(final String encodedData, final Node root) {
+            this.encodedData = encodedData;
+            this.root = root;
+        }
     }
 	public static void main(String[] args) {
         final String test = "abcdeffg";
